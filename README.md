@@ -1,0 +1,68 @@
+# Proxy Provider
+
+*A friction‑free toolkit for discovering, vetting, and rotating free HTTP/SOCKS proxies.*
+
+[![PyPI](https://img.shields.io/pypi/v/proxy‑provider.svg)](https://pypi.org/project/proxy‑provider/)  [![License](https://img.shields.io/github/license/your‑org/proxy‑provider)](LICENSE)
+
+---
+
+## Why?
+
+Open‑proxy lists are noisy and short‑lived. **Proxy Provided** automates the grunt work so you can focus on your crawler, data‑gathering script, or pentest without babysitting IPs.
+
+* **Scrape → Validate → Store** – Hundreds of public proxies tested in parallel and persisted locally.
+* **Health‑aware rotation** – Always hands you the *least‑recently‑used* proxy that’s alive and low‑latency.
+
+---
+
+## Features
+
+| Capability               | Details                                                                          |
+| ------------------------ | -------------------------------------------------------------------------------- |
+| **Scraping**             | Built‑in scrapers for *spys.me* and *free‑proxy‑list.net* (easy to extend).      |
+| **Health checks**        | Concurrent checks via `httpx`; records RTT and marks dead proxies.               |
+| **Rotation policy**      | Least‑recently‑used → lowest latency, with on‑demand re‑probe.           |
+
+---
+
+## Installation
+
+```bash
+pip install proxy‑provider           # CSV store + rotator
+```
+
+---
+
+## Quick Start
+
+```python
+from proxy_provider import ProxyRotator
+rotator = ProxyRotator()
+for _ in range(100):
+    proxy_url = rotator.get_proxy()
+    print("Using:", proxy_url)
+
+```
+
+### Refreshing the proxy database
+
+`proxy_provider` ships with a ready-made list of proxies and their last-known status, but public proxies go bad quickly.
+Although `ProxyRotator` checks a proxy’s health every time it’s selected—and skips to the next one if it’s dead—everything runs faster when the database is already current.
+
+Update all proxy records in a single step:
+
+**From the command line**
+
+```bash
+proxy-rotator scrape-and-update
+```
+
+**From Python**
+
+```python
+from proxy_provider import scrape_and_update
+
+scrape_and_update()
+```
+
+The command (or function) re-scrapes the proxy sources, tests each proxy, and writes the latest health and latency information back to your local store.

@@ -1,17 +1,16 @@
 import asyncio
-import colorlog
 from logging import getLogger
-from db.csv_store import CsvStore
-from health_check import bulk_health_check
-from scrapers import scrape_free_proxy_list, scrape_spys
+from proxy_provider.db.csv_store import CsvStore
+from proxy_provider.health_check import bulk_health_check
+from proxy_provider.scrapers import scrape_free_proxy_list, scrape_spys
 
-from utils.logging import configure_logging
+from proxy_provider.utils.logging import configure_logging
 
 configure_logging("INFO")
 
 logger = getLogger(__name__)
 
-async def scrape_and_update_db():
+async def scrape_and_update():
     sources = scrape_spys() | scrape_free_proxy_list()
     logger.info(f"Total number of scraped proxies: {len(sources)}")
     res = await bulk_health_check(sources)
@@ -22,4 +21,4 @@ async def scrape_and_update_db():
 
 if __name__ == "__main__":
     # This is the standard way to run a top-level async function from a script
-    asyncio.run(scrape_and_update_db())
+    asyncio.run(scrape_and_update())

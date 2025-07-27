@@ -54,13 +54,13 @@ Update all proxy records in a single step:
 **From the command line**
 
 ```bash
-proxy-rotator scrape-and-update
+proxy-provider scrape-and-update
 ```
 
 **From Python**
 
 ```python
-from proxy_provider import scrape_and_update
+from proxy_provider.db import scrape_and_update
 
 scrape_and_update()
 ```

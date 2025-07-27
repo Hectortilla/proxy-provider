@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
 from typing import Optional
 
-from db.csv_store import ISO_FMT, CsvStore, _Row, _utcnow
-from utils.logging import configure_logging
+from proxy_provider.db.csv_store import ISO_FMT, CsvStore, _Row, _utcnow
+from proxy_provider.utils.logging import configure_logging
 
 configure_logging("INFO")
 

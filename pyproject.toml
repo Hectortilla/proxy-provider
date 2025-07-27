@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "proxy-provider"
+name = "proxy_provider"
 version = "0.1.0"
 description = ""
 authors = ["Hector Soria <attosoria@hotmail.com>"]
@@ -16,6 +16,9 @@ colorlog = "^6.9.0"
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
 isort = "^6.0.1"
+
+[tool.poetry.scripts]
+proxy-provider = "proxy_provider.cli:cli"
 
 [build-system]
 requires = ["poetry-core"]

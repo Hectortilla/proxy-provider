@@ -12,10 +12,10 @@ Example
 -------
 >>> from proxy_utils.stores.csv_store import CsvStore
 >>> store = CsvStore("proxies.csv")
->>> store.upsert("203.0.113.7:8080")          # inserts or merges
->>> store.upsert("203.0.113.7:8080", healthy=False)          # inserts or merges
->>> store.delete("203.0.113.7:8080")    # sets healthy = False
->>> store.all()    # sets healthy = False
+>>> store.upsert("203.0.113.7:8080") # insert a new proxy
+>>> store.upsert("203.0.113.7:8080", healthy=False) # update existing proxy
+>>> store.delete("203.0.113.7:8080") # delete a proxy
+>>> store.all() # get all proxies as a list of _Row objects
 """
 
 from __future__ import annotations

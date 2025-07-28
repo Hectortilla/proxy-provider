@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Tuple
 
 from proxy_provider.db.csv_store import ISO_FMT, CsvStore, _Row, _utcnow
 from proxy_provider.utils.logging import configure_logging
@@ -18,7 +18,7 @@ class ProxyRotator:
         self.store = CsvStore()
         self.proxies = self.store.all()
 
-    def get_proxy(self) -> Optional[str]:
+    def get_proxy(self) -> Optional[Tuple[str, float]]:
         """
         Implements a smart rotating policy for retrieving proxies:
         1. Filters out unhealthy proxies.
@@ -85,4 +85,4 @@ class ProxyRotator:
             last_used=_utcnow(),
         )
 
-        return selected_proxy_row.to_proxy_url()
+        return selected_proxy_row.to_proxy_url(), selected_proxy_row.latency_ms

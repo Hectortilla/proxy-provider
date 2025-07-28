@@ -39,10 +39,12 @@ pip install proxy‑provider           # CSV store + rotator
 from proxy_provider import ProxyRotator
 rotator = ProxyRotator()
 for _ in range(100):
-    proxy_url = rotator.get_proxy()
-    print("Using:", proxy_url)
+    proxy_url, latency = rotator.get_proxy()
+    print("Using:", proxy_url, "with latency", latency, "ms")
 
 ```
+
+As you can see, ProxyRotator returns both the proxy URL and its latency in milliseconds. Since open proxies are often slow, consider adjusting your timeouts based on the reported latency.
 
 ### Refreshing the proxy database
 

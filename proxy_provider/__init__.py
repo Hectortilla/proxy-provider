@@ -60,12 +60,12 @@ class ProxyRotator:
             # Using (latency_ms is None, latency_ms or float('inf')) puts None (inf) last.
 
             return (
-                last_used_dt is None,  # True if never used (comes first)
+                last_used_dt is not None,  # False if never used (comes first)
                 last_used_dt
                 or datetime.min.replace(
                     tzinfo=timezone.utc
                 ),  # Actual date, or very old date if None (for consistent comparison)
-                proxy_row.latency_ms is None,  # True if latency is None (comes last)
+                proxy_row.latency_ms is not None,  # False if latency is None (comes last)
                 proxy_row.latency_ms
                 or float(
                     "inf"

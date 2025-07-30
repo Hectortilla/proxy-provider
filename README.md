@@ -68,3 +68,22 @@ scrape_and_update()
 ```
 
 The command (or function) re-scrapes the proxy sources, tests each proxy, and writes the latest health and latency information back to your local store.
+
+---
+
+## Testing
+
+The project includes a test suite using pytest. To run the tests:
+
+```bash
+# Install dev dependencies including pytest
+poetry install
+
+# Run the tests
+poetry run pytest
+```
+
+The tests verify the functionality of the ProxyRotator, including:
+- Ensuring different proxies are returned in consecutive calls to get_proxy()
+
+For more details about the test structure and how to add new tests, see [tests/README.md](tests/README.md).

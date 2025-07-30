@@ -29,7 +29,7 @@ from typing import List, Optional
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-ISO_FMT = "%Y-%m-%dT%H:%M:%SZ"  # always UTC
+ISO_FMT = "%Y-%m-%dT%H:%M:%S.%fZ" # always UTC
 FIELDNAMES = [
     "scheme",
     "ip",
@@ -62,7 +62,7 @@ class _Row:
         return f"{self.ip}:{self.port}"
 
     def to_proxy_url(self) -> str:
-        return f"{self.scheme}://{self.ip}:{self.port}"
+        return f"{self.scheme}://{self.ip_port}"
 
 
 class CsvStore:
@@ -89,24 +89,32 @@ class CsvStore:
     def all(self) -> List[_Row]:
         with self.path.open(newline="", encoding="utf‑8") as f:
             reader = csv.DictReader(f, fieldnames=FIELDNAMES)
-            next(reader)  # skip header
+            try:
+                next(reader)  # skip header
+            except StopIteration:
+                return []
             rows = []
             for rec in reader:
                 # convert types
-                rows.append(
-                    _Row(
-                        scheme=rec["scheme"],
-                        ip=rec["ip"],
-                        port=int(rec["port"]),
-                        healthy=rec["healthy"] == "True",
-                        latency_ms=(
-                            float(rec["latency_ms"]) if rec["latency_ms"] else None
-                        ),
-                        last_checked=rec["last_checked"] or None,
-                        last_used=rec["last_used"] or None,
-                        created_at=rec["created_at"],
+                try:
+                    rows.append(
+                        _Row(
+                            scheme=rec["scheme"],
+                            ip=rec["ip"],
+                            port=int(rec["port"]),
+                            healthy=rec["healthy"] == "True",
+                            latency_ms=(
+                                float(rec["latency_ms"]) if rec["latency_ms"] else None
+                            ),
+                            last_checked=rec["last_checked"] or None,
+                            last_used=rec["last_used"] or None,
+                            created_at=rec["created_at"],
+                        )
                     )
-                )
+                except ValueError as e:
+                    # Handle malformed data gracefully
+                    print(f"Skipping malformed row: {rec}. Error: {e}")
+                    continue
             return rows
 
     def upsert(
@@ -121,7 +129,12 @@ class CsvStore:
         """Insert or upsert a proxy row. *scheme* defaults to `default_scheme`."""
         scheme = scheme or self.default_scheme
         ip, port = ip_port.split(":", 1)
-        port = int(port)
+
+        try:
+            port = int(port)
+        except ValueError:
+            raise ValueError(f"Invalid port number in '{ip_port}': {port}")
+
         rows = self.all()
         found = False
         for row in rows:

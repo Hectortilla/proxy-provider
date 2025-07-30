@@ -1,4 +1,4 @@
-SRC_DIR := $(CURDIR)/src
+SRC_DIR := $(CURDIR)/proxy_provider
 
 format_black:
 	@echo "Formatting code with Black..."

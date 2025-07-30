@@ -16,9 +16,16 @@ colorlog = "^6.9.0"
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
 isort = "^6.0.1"
+pytest = "^8.0.0"
 
 [tool.poetry.scripts]
 proxy-provider = "proxy_provider.cli:cli"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+pythonpath = ["."]
 
 [build-system]
 requires = ["poetry-core"]

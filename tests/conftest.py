@@ -1,14 +1,15 @@
-
-import pytest
 import os
 import tempfile
 
-from proxy_provider.db.csv_store import CsvStore, ISO_FMT
+import pytest
+
+from proxy_provider.db.csv_store import ISO_FMT, CsvStore
 
 PROXY_1 = "192.168.1.1:8080"
 PROXY_2 = "192.168.1.2:8080"
 PROXY_3 = "192.168.1.3:8080"
 UNHEALTHY_PROXY = "192.168.1.4:8080"
+
 
 @pytest.fixture
 def csv_file():
@@ -18,10 +19,12 @@ def csv_file():
     yield path
     os.unlink(path)
 
+
 @pytest.fixture
 def csv_store(csv_file):
     """Create a CsvStore instance with the temporary CSV file."""
     return CsvStore(path=csv_file)
+
 
 @pytest.fixture
 def varied_csv_store(csv_store):

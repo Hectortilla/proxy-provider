@@ -19,9 +19,9 @@ Example
 """
 
 from __future__ import annotations
-import os
 
 import csv
+import os
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -29,7 +29,7 @@ from typing import List, Optional
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-ISO_FMT = "%Y-%m-%dT%H:%M:%S.%fZ" # always UTC
+ISO_FMT = "%Y-%m-%dT%H:%M:%S.%fZ"  # always UTC
 FIELDNAMES = [
     "scheme",
     "ip",

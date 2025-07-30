@@ -1,14 +1,16 @@
 SRC_DIR := $(CURDIR)/proxy_provider
+TEST_DIR := $(CURDIR)/tests
 
 format_black:
 	@echo "Formatting code with Black..."
-	black SRC_DIR
+	@echo "Using Black to format Python code in $(SRC_DIR)..."
+	black $(SRC_DIR) $(TEST_DIR)
 	@echo "Black formatting completed"
 
 # Sort imports with isort
 format_isort:
 	@echo "Sorting imports with isort..."
-	isort SRC_DIR
+	isort $(SRC_DIR) $(TEST_DIR)
 	@echo "Import sorting completed"
 
 # Run all formatters

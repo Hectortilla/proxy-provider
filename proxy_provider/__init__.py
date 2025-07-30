@@ -6,6 +6,7 @@ from proxy_provider.utils.logging import configure_logging
 
 configure_logging("INFO")
 
+
 class ProxyRotator:
     """Simple *least‑recently‑used* proxy rotator with health validation.
 
@@ -65,7 +66,8 @@ class ProxyRotator:
                 or datetime.min.replace(
                     tzinfo=timezone.utc
                 ),  # Actual date, or very old date if None (for consistent comparison)
-                proxy_row.latency_ms is not None,  # False if latency is None (comes last)
+                proxy_row.latency_ms
+                is not None,  # False if latency is None (comes last)
                 proxy_row.latency_ms
                 or float(
                     "inf"

@@ -4,6 +4,7 @@ from logging.config import dictConfig
 
 from colorlog import ColoredFormatter
 
+
 def configure_logging(level: str = "INFO") -> None:
     """Configure root logger with a colorlog formatter once per process."""
     fmt = "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s"
@@ -16,10 +17,10 @@ def configure_logging(level: str = "INFO") -> None:
                     "()": ColoredFormatter,
                     "format": fmt,
                     "log_colors": {
-                        "DEBUG":    "white",
-                        "INFO":     "green",
-                        "WARNING":  "yellow",
-                        "ERROR":    "red",
+                        "DEBUG": "white",
+                        "INFO": "green",
+                        "WARNING": "yellow",
+                        "ERROR": "red",
                         "CRITICAL": "bold_red",
                     },
                 },
@@ -37,9 +38,9 @@ def configure_logging(level: str = "INFO") -> None:
             # ← NEW
             "loggers": {
                 "httpx": {
-                    "level": "WARNING",   # DEBUG/INFO are now muted
-                    "propagate": True,    # still bubble up to root so colorlog prints it
+                    "level": "WARNING",  # DEBUG/INFO are now muted
+                    "propagate": True,  # still bubble up to root so colorlog prints it
                 }
-            }
+            },
         }
     )

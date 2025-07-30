@@ -1,8 +1,8 @@
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 from proxy_provider import ProxyRotator
-from proxy_provider.db.csv_store import CsvStore, ISO_FMT, FIELDNAMES, _utcnow
+from proxy_provider.db.csv_store import FIELDNAMES, ISO_FMT, CsvStore, _utcnow
 from tests.conftest import PROXY_1, PROXY_2, PROXY_3, UNHEALTHY_PROXY
 
 
@@ -18,17 +18,27 @@ class TestProxyRotator:
             proxy1, latency1 = rotator.get_proxy()
             proxy2, latency2 = rotator.get_proxy()
             # Verify that different proxies are returned
-            assert proxy1 != proxy2, f"Expected different proxies, but got {proxy1} twice"
+            assert (
+                proxy1 != proxy2
+            ), f"Expected different proxies, but got {proxy1} twice"
             # Get the third proxy
             proxy3, latency3 = rotator.get_proxy()
 
             # Verify that all three proxies are different
-            assert proxy1 != proxy3, f"Expected different proxies, but got {proxy1} and {proxy3}"
-            assert proxy2 != proxy3, f"Expected different proxies, but got {proxy2} and {proxy3}"
-            assert UNHEALTHY_PROXY not in (proxy1, proxy2, proxy3), f"Unhealthy proxy {UNHEALTHY_PROXY} should not be returned"
+            assert (
+                proxy1 != proxy3
+            ), f"Expected different proxies, but got {proxy1} and {proxy3}"
+            assert (
+                proxy2 != proxy3
+            ), f"Expected different proxies, but got {proxy2} and {proxy3}"
+            assert UNHEALTHY_PROXY not in (
+                proxy1,
+                proxy2,
+                proxy3,
+            ), f"Unhealthy proxy {UNHEALTHY_PROXY} should not be returned"
 
     def test_store_properly_upsert(self, varied_csv_store):
-        """Test that CsvStore properly """
+        """Test that CsvStore properly"""
         # Patch the CsvStore to use our test CSV file
         with patch("proxy_provider.CsvStore", return_value=varied_csv_store):
             rotator = ProxyRotator()
@@ -79,8 +89,12 @@ class TestProxyRotator:
 
             # PROXY_3 should be first (no last_used), then PROXY_2 (older), then PROXY_1
             assert PROXY_3 in proxy1, "Proxy with no last_used should be returned first"
-            assert PROXY_2 in proxy2, "Proxy with older last_used should be returned second"
-            assert PROXY_1 in proxy3, "Proxy with newer last_used should be returned last"
+            assert (
+                PROXY_2 in proxy2
+            ), "Proxy with older last_used should be returned second"
+            assert (
+                PROXY_1 in proxy3
+            ), "Proxy with newer last_used should be returned last"
 
     def test_proxy_sorting_by_latency(self, csv_store):
         """Test that proxies are sorted by latency when last_used timestamps are the same."""
@@ -99,12 +113,19 @@ class TestProxyRotator:
             proxy3, _ = rotator.get_proxy()
 
             # Should be ordered by latency: PROXY_2 (100ms), PROXY_3 (200ms), PROXY_1 (300ms)
-            assert PROXY_2 in proxy1, "Proxy with lowest latency should be returned first"
-            assert PROXY_3 in proxy2, "Proxy with medium latency should be returned second"
-            assert PROXY_1 in proxy3, "Proxy with highest latency should be returned last"
+            assert (
+                PROXY_2 in proxy1
+            ), "Proxy with lowest latency should be returned first"
+            assert (
+                PROXY_3 in proxy2
+            ), "Proxy with medium latency should be returned second"
+            assert (
+                PROXY_1 in proxy3
+            ), "Proxy with highest latency should be returned last"
 
     def test_last_used_timestamp_update(self, csv_store):
         """Test that last_used timestamp is updated when a proxy is retrieved."""
+
         # Add a proxy
         def _get_proxy_1(rotator):
             proxies = rotator.store.all()
@@ -116,7 +137,9 @@ class TestProxyRotator:
             rotator = ProxyRotator()
 
             proxy_1 = _get_proxy_1(rotator)
-            assert proxy_1.last_used is None, "last_used should be None before getting the proxy"
+            assert (
+                proxy_1.last_used is None
+            ), "last_used should be None before getting the proxy"
 
             # Get the proxy
             before_get = datetime.now(timezone.utc)
@@ -132,8 +155,12 @@ class TestProxyRotator:
             assert updated_proxy.last_used is not None, "last_used should be updated"
 
             # Parse the timestamp and check it's between before_get and after_get
-            last_used_dt = datetime.strptime(updated_proxy.last_used, ISO_FMT).replace(tzinfo=timezone.utc)
-            assert before_get <= last_used_dt <= after_get, "last_used timestamp should be updated to current time"
+            last_used_dt = datetime.strptime(updated_proxy.last_used, ISO_FMT).replace(
+                tzinfo=timezone.utc
+            )
+            assert (
+                before_get <= last_used_dt <= after_get
+            ), "last_used timestamp should be updated to current time"
 
     def test_malformed_date_handling(self, varied_csv_store):
         """Test that malformed dates in last_used are handled gracefully."""
@@ -142,7 +169,9 @@ class TestProxyRotator:
             rotator = ProxyRotator()
 
             proxy, _ = rotator.get_proxy()
-            assert PROXY_1 in proxy, "Proxy with lowest latency should be returned first"
+            assert (
+                PROXY_1 in proxy
+            ), "Proxy with lowest latency should be returned first"
 
             # Corrupt the last_used date for PROXY_1
             rotator.proxies = varied_csv_store.upsert(
@@ -151,9 +180,13 @@ class TestProxyRotator:
             )
 
             proxy, _ = rotator.get_proxy()
-            assert PROXY_1 in proxy, "Proxy with malformed date should be treated as having no last_used"
+            assert (
+                PROXY_1 in proxy
+            ), "Proxy with malformed date should be treated as having no last_used"
             proxy, _ = rotator.get_proxy()
-            assert PROXY_2 in proxy, "Proxy with valid last_used should be returned next"
+            assert (
+                PROXY_2 in proxy
+            ), "Proxy with valid last_used should be returned next"
 
     def test_proxy_reuse_after_all_used(self, varied_csv_store):
         with patch("proxy_provider.CsvStore", return_value=varied_csv_store):

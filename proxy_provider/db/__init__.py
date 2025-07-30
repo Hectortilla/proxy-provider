@@ -1,14 +1,15 @@
 import asyncio
 from logging import getLogger
+
 from proxy_provider.db.csv_store import CsvStore
 from proxy_provider.health_check import bulk_health_check
 from proxy_provider.scrapers import scrape_free_proxy_list, scrape_spys
-
 from proxy_provider.utils.logging import configure_logging
 
 configure_logging("INFO")
 
 logger = getLogger(__name__)
+
 
 async def scrape_and_update():
     sources = scrape_spys() | scrape_free_proxy_list()

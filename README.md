@@ -83,7 +83,6 @@ poetry install
 poetry run pytest
 ```
 
-The tests verify the functionality of the ProxyRotator, including:
-- Ensuring different proxies are returned in consecutive calls to get_proxy()
+The tests verify the functionality of the ProxyRotator and the CsvStore:
 
 For more details about the test structure and how to add new tests, see [tests/README.md](tests/README.md).

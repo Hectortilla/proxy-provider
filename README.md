@@ -3,7 +3,10 @@
 *A friction‑free toolkit for discovering, vetting, and rotating free HTTP/SOCKS proxies.*
 
 [![PyPI](https://img.shields.io/pypi/v/proxy‑provider.svg)](https://pypi.org/project/proxy‑provider/)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+![Run Tests](https://github.com/Hectortilla/proxy-provider/actions/workflows/tests.yml/badge.svg)
 
 ---
 

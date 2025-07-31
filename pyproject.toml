@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "proxy_provider"
-version = "0.1.0"
+name = "proxy-provider"
+version = "0.1.1"
 description = ""
 authors = ["Hector Soria <attosoria@hotmail.com>"]
 readme = "README.md"

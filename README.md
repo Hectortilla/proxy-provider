@@ -1,8 +1,27 @@
-# Proxy Provider
+<h1 align="center">
+Proxy Provider
+</h1>
+</p>
+<p align="center">
+  <strong>
+    A friction‑free toolkit for discovering, vetting, and rotating free HTTP/SOCKS proxies.
+  </strong>
+</p>
 
-*A friction‑free toolkit for discovering, vetting, and rotating free HTTP/SOCKS proxies.*
-
-![Tests](https://github.com/Hectortilla/proxy-provider/actions/workflows/tests.yml/badge.svg) [![PyPI](https://img.shields.io/pypi/v/proxy-provider.svg)](https://pypi.org/project/proxy-provider/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <img
+    src="https://github.com/Hectortilla/proxy-provider/actions/workflows/tests.yml/badge.svg"
+    alt="Tests"
+  />
+  <a href="https://pypi.org/project/proxy-provider/"><img
+    src="https://img.shields.io/pypi/v/proxy-provider.svg"
+    alt="PyPI"
+  /></a>
+  <a href="https://opensource.org/licenses/MIT"><img
+    src="https://img.shields.io/badge/License-MIT-yellow.svg"
+    alt="License: MIT"
+  /></a>
+</p>
 
 ---
 

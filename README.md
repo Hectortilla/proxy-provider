@@ -81,9 +81,10 @@ proxy-provider scrape-and-update
 **From Python**
 
 ```python
+import asyncio
 from proxy_provider.db import scrape_and_update
 
-scrape_and_update()
+asyncio.run(scrape_and_update())
 ```
 
 The command (or function) re-scrapes the proxy sources, tests each proxy, and writes the latest health and latency information back to your local store.

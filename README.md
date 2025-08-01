@@ -75,7 +75,10 @@ Update all proxy records in a single step:
 **From the command line**
 
 ```bash
-proxy-provider scrape-and-update
+proxy-provider scrape-and-update \
+    --concurrency 10 \
+    --target-url https://google.com \
+    --timeout 10
 ```
 
 **From Python**
@@ -84,10 +87,15 @@ proxy-provider scrape-and-update
 import asyncio
 from proxy_provider.db import scrape_and_update
 
-asyncio.run(scrape_and_update())
+asyncio.run(scrape_and_update(concurrency=10, target_url="https://google.com", timeout=10)) # Or await scrape_and_update(...) in an async function
 ```
 
 The command (or function) re-scrapes the proxy sources, tests each proxy, and writes the latest health and latency information back to your local store.
+
+Both the command and the function accept:
+- `concurrency` (optional) sets the number of concurrent requests for scraping and health checks (default: 100).
+- `target-url` (optional) used to test the proxies against.
+- `timeout` (optional) sets the timeout for each request (default: 5 seconds).
 
 ---
 
